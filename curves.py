@@ -16,7 +16,7 @@ def LinearCurve(positions, t, screen, color, trigger=True):
         pygame.draw.circle(screen, color, (int(curve[0]), int(curve[1])), 8)
         return (int(curve[0]), int(curve[1]))
 
-def QuadraticCurve(positions, t, screen, color, curve_list, green):
+def QuadraticCurve(positions, t, screen, color, curve_list, green, trigger= True):
 
     P0_x = pow((1-t), 2) * positions[0].x
     P0_y = pow((1-t), 2) * positions[0].y
@@ -28,20 +28,20 @@ def QuadraticCurve(positions, t, screen, color, curve_list, green):
     P2_y = t ** 2 * positions[2].y
 
     curve = (P0_x + P1_x + P2_x, P0_y + P1_y + P2_y)
+    if trigger == True:
+        pygame.draw.line(screen, (0, 0, 0), (positions[0].x, positions[0].y), (positions[1].x, positions[1].y), 1)
+        pygame.draw.line(screen, (0, 0, 0), (positions[1].x, positions[1].y), (positions[2].x, positions[2].y), 1)
+        first_line = [positions[0], positions[1]]
+        second_line = [positions[1], positions[2]]
 
-    pygame.draw.line(screen, (0, 0, 0), (positions[0].x, positions[0].y), (positions[1].x, positions[1].y), 1)
-    pygame.draw.line(screen, (0, 0, 0), (positions[1].x, positions[1].y), (positions[2].x, positions[2].y), 1)
-    first_line = [positions[0], positions[1]]
-    second_line = [positions[1], positions[2]]
+        a = LinearCurve(first_line, t,  screen, green, False)
+        b = LinearCurve(second_line, t,  screen, green, False)
 
-    a = LinearCurve(first_line, t,  screen, green, False)
-    b = LinearCurve(second_line, t,  screen, green, False)
-
-    pygame.draw.line(screen, green, a, b, 2)
-    pygame.draw.circle(screen, color, (int(curve[0]), int(curve[1])), 8)
+        pygame.draw.line(screen, green, a, b, 2)
+        pygame.draw.circle(screen, color, (int(curve[0]), int(curve[1])), 8)
     curve_list.append((int(curve[0]), int(curve[1])))
 
-def CubicCurve(positions, t, screen, color, curve_list, green, blue):
+def CubicCurve(positions, t, screen, color, curve_list, green, blue, quad_curve, quad_curve1, quad_curve2):
     P0_x = pow((1 - t), 3) * positions[0].x
     P0_y = pow((1 - t), 3) * positions[0].y
 
@@ -63,12 +63,20 @@ def CubicCurve(positions, t, screen, color, curve_list, green, blue):
     first_line = [positions[0], positions[1]]
     second_line = [positions[1], positions[2]]
     third_line = [positions[2], positions[3]]
+    fourth_line = [positions[0], positions[1], positions[2]]
+    fifth_line = [positions[1], positions[2], positions[3]]
+    sixth_line = [positions[0], positions[2], positions[3]]
 
     a = LinearCurve(first_line, t,  screen, green, False)
     b = LinearCurve(second_line, t,  screen, green, False)
     c = LinearCurve(third_line, t,  screen, green, False)
+
     pygame.draw.line(screen, green, a, b, 2)
     pygame.draw.line(screen, green, b, c, 2)
+
+    QuadraticCurve(fourth_line, t, screen, (100, 100, 0), quad_curve, green)
+    QuadraticCurve(fifth_line, t, screen, (100, 100, 0), quad_curve1, green)
+    QuadraticCurve(sixth_line, t, screen, (100, 100, 0), quad_curve2, green, False)
 
     position_1 = Position(a[0], a[1])
     position_2 = Position(b[0], b[1])
