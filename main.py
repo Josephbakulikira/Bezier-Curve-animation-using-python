@@ -43,19 +43,12 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-    for point in linear_positions:
-        point.display(screen, black)
 
 
-    for point in Quadratic_positions:
-        point.display(screen, black)
-
-    for point in cubic_positions:
-        point.display(screen, black)
-
-    text = font.render("T = " + str(t)[:5], True, black)
+    # Gui Text
+    text = font.render(" T = " + str(t)[:5], True, black)
     textRect = text.get_rect()
-    textRect.center = (960, 120)
+    textRect.center = (960, 100)
     screen.blit(text, textRect)
     linear = font.render("Linear " , True, black)
     textRect = linear.get_rect()
@@ -69,6 +62,7 @@ while run:
     textRect = cubic.get_rect()
     textRect.center = (1400, 120)
     screen.blit(cubic, textRect)
+
     #separator
     pygame.draw.line(screen, purple, (480, 850), (480, 150), 1)
     pygame.draw.line(screen, purple, (950, 850), (950, 150), 1)
@@ -92,6 +86,13 @@ while run:
         curve1.clear()
         curve2.clear()
         curve3.clear()
+
+    for point in linear_positions:
+        point.display(screen, black)
+    for point in Quadratic_positions:
+        point.display(screen, black)
+    for point in cubic_positions:
+        point.display(screen, black)
 
     t += speed
     pygame.display.update()
