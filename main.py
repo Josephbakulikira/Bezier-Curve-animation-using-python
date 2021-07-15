@@ -43,6 +43,9 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_ESCAPE:
+                run = False
 
 
     # Gui Text
@@ -63,13 +66,14 @@ while run:
     textRect.center = (1400, 120)
     screen.blit(cubic, textRect)
 
-    #separator
+    #separator ---- | ----- | ------
     pygame.draw.line(screen, purple, (480, 850), (480, 150), 1)
     pygame.draw.line(screen, purple, (950, 850), (950, 150), 1)
 
     LinearCurve(linear_positions, t, screen, red)
     QuadraticCurve(Quadratic_positions, t, screen, red, quadratic_curve, green)
     CubicCurve(cubic_positions, t, screen, red, cubic_curve, green, blue, curve1, curve2, curve3)
+
     if len(cubic_curve) > 2:
         pygame.draw.lines(screen, (179, 179, 179),False,  curve1, 3)
         pygame.draw.lines(screen, (179, 179, 179),False,  curve3, 3)
