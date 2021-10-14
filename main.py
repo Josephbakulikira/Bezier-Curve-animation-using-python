@@ -1,18 +1,15 @@
 import pygame
-import os
-
 from positions import Position
 from curves import *
 
-os.environ["SDL_VIDEO_CENTERED"]='1'
-
 width, height = 1920, 1080
 size = (width, height)
+
 pygame.init()
-pygame.display.set_caption("Bezier curves")
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 fps = 60
+
 font = pygame.font.Font('freesansbold.ttf', 32)
 
 #colors
@@ -25,7 +22,7 @@ purple = (205, 163, 255)
 
 #parameters
 t = 0
-speed = 0.005
+speed = 0.002
 linear_positions = [Position(100, 800, "P0"), Position(300, 200, "P1")]
 Quadratic_positions = [Position(660, 800, "P0"), Position(880, 450, "P1"), Position(720, 200, "P2")]
 cubic_positions = [Position(1050, 800, "P0"), Position(1280, 200, "P1"), Position(1420, 800, "P2"), Position(1800, 200, "P3")]
@@ -40,10 +37,13 @@ run = True
 while run:
     screen.fill(white)
     clock.tick(fps)
+    frameRate = int(clock.get_fps())
+    pygame.display.set_caption("Bezier Curve - FPS : {}".format(frameRate))
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-        if event.type == pygame.KEYUP:
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 run = False
 
@@ -54,6 +54,7 @@ while run:
     textRect.center = (960, 100)
     screen.blit(text, textRect)
     linear = font.render("Linear " , True, black)
+    
     textRect = linear.get_rect()
     textRect.center = (240, 120)
     screen.blit(linear, textRect)
@@ -61,6 +62,7 @@ while run:
     textRect = Quadratic.get_rect()
     textRect.center = (620, 120)
     screen.blit(Quadratic, textRect)
+
     cubic = font.render("Cubic", True, black)
     textRect = cubic.get_rect()
     textRect.center = (1400, 120)
@@ -91,6 +93,7 @@ while run:
         curve2.clear()
         curve3.clear()
 
+    # draw points
     for point in linear_positions:
         point.display(screen, black)
     for point in Quadratic_positions:
