@@ -8,6 +8,7 @@ def LinearCurve(positions, t, screen, color, trigger=True):
     P1_y = t * positions[1].y
 
     curve = (P0_x + P1_x, P0_y + P1_y)
+    
     if trigger == True:
         pygame.draw.line(screen, (0, 0, 0), (positions[0].x, positions[0].y), (positions[1].x, positions[1].y), 1)
         pygame.draw.line(screen, color, (positions[0].x, positions[0].y),(int(curve[0]), int(curve[1])), 5)
